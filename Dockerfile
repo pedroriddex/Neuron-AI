@@ -3,12 +3,15 @@
 
 FROM python:3.11-slim AS base
 
-ARG TORCH_URL="https://download.pytorch.org/whl/cpu/torch-2.2.1%2Bcpu-cp311-cp311-linux_x86_64.whl"
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     WERNICKE_QUANTIZE=1 \
     BROCA_QUANTIZE=1 \
-    TORCH_COMPILE=1
+    TORCH_COMPILE=0 \
+    OTEL_SAMPLE_RATIO=0 \
+    TRANSFORMERS_NO_ADVISORY_WARNINGS=1 \
+    HF_HUB_DISABLE_PROGRESS=1
 
 # System deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -20,7 +23,6 @@ WORKDIR /app
 # Install Python deps early for cache efficiency
 COPY requirements.txt ./
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir "$TORCH_URL" && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the source

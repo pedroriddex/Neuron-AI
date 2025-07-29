@@ -40,7 +40,7 @@ if _OTEL_AVAILABLE:
     provider = TracerProvider(
         resource=resource, sampler=ParentBased(TraceIdRatioBased(SAMPLE_RATIO))
     )
-    processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=OTEL_ENDPOINT, insecure=True))
+    processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=OTEL_ENDPOINT))
     provider.add_span_processor(processor)
     trace.set_tracer_provider(provider)
 
