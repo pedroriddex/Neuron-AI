@@ -11,7 +11,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     TORCH_COMPILE=0 \
     OTEL_SAMPLE_RATIO=0 \
     TRANSFORMERS_NO_ADVISORY_WARNINGS=1 \
-    HF_HUB_DISABLE_PROGRESS=1
+    HF_HUB_DISABLE_PROGRESS=1 \
+    PYTHONWARNINGS="ignore::FutureWarning" \
+    TRANSFORMERS_VERBOSITY=error
 
 # System deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
