@@ -1,0 +1,31 @@
+name: Mac MLX Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+jobs:
+  smoke:
+    runs-on: self-hosted
+    labels: ["mac-mlx"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps (MLX build)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run unit tests (fp16/int8)
+        env:
+          WERNICKE_QUANTIZE: "1"
+          BROCA_QUANTIZE: "1"
+          TORCH_COMPILE: "0"  # not supported on MLX yet
+        run: pytest -q
